@@ -13,13 +13,13 @@ export function cleanInput(input) {
 export function startREPL(state) {
     const { rl, commandsRegistry } = state;
     rl.prompt();
-    rl.on("line", (line) => {
+    rl.on("line", async (line) => {
         const input = cleanInput(line);
         const commandName = input[0];
         const cmd = commandsRegistry[commandName];
         if (cmd) {
             try {
-                cmd.callback(state);
+                await cmd.callback(state);
             }
             catch (error) {
                 console.log(`Error executing command: ${error}`);

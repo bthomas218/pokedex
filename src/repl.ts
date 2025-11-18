@@ -15,7 +15,7 @@ export function cleanInput(input: string): string[] {
 export function startREPL(state: State) {
   const { rl, commandsRegistry } = state;
   rl.prompt();
-  rl.on("line", (line) => {
+  rl.on("line", async (line) => {
     const input = cleanInput(line);
     const commandName = input[0];
 
@@ -23,7 +23,7 @@ export function startREPL(state: State) {
 
     if (cmd) {
       try {
-        cmd.callback(state);
+        await cmd.callback(state);
       } catch (error) {
         console.log(`Error executing command: ${error}`);
       }
