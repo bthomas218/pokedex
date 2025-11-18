@@ -1,4 +1,6 @@
 import * as readline from "readline";
+import { getCommands } from "./commands.js";
+import { get } from "http";
 /**
  * Splits user input into words based on whitespace
  * @param input The user input
@@ -20,8 +22,19 @@ export function startREPL() {
   rl.prompt();
   rl.on("line", (line) => {
     const input = cleanInput(line);
-    if (input.length > 0) {
-      console.log(`Your command was: ${input[0]}`);
+    const commandName = input[0];
+
+    const availableCommands = getCommands();
+    const cmd = availableCommands[commandName];
+
+    if (cmd) {
+      try {
+        cmd.callback(availableCommands);
+      } catch (error) {
+        console.log(`Error executing command: ${error}`);
+      }
+    } else {
+      console.log(`Unknown command`);
     }
     rl.prompt();
   });
