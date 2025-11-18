@@ -1,5 +1,5 @@
 // For unit tests
-import { cleanInput } from "./repl";
+import { cleanInput } from "./repl.js";
 import { describe, expect, test } from "vitest";
 
 // Unit tests for cleanInput function
