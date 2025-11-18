@@ -1,5 +1,3 @@
-import * as readline from "readline";
-import { getCommands } from "./commands.js";
 /**
  * Splits user input into words based on whitespace
  * @param input The user input
@@ -10,22 +8,18 @@ export function cleanInput(input) {
 }
 /**
  * Starts a REPL (Read-Eval-Print Loop) for user interaction
+ * @param state The initial state of the REPL
  */
-export function startREPL() {
-    const rl = readline.createInterface({
-        input: process.stdin,
-        output: process.stdout,
-        prompt: "Pokedex> ",
-    });
+export function startREPL(state) {
+    const { rl, commandsRegistry } = state;
     rl.prompt();
     rl.on("line", (line) => {
         const input = cleanInput(line);
         const commandName = input[0];
-        const availableCommands = getCommands();
-        const cmd = availableCommands[commandName];
+        const cmd = commandsRegistry[commandName];
         if (cmd) {
             try {
-                cmd.callback(availableCommands);
+                cmd.callback(state);
             }
             catch (error) {
                 console.log(`Error executing command: ${error}`);
