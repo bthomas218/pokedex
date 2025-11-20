@@ -1,6 +1,10 @@
+import { Cache } from "./pokecache.js";
 export class PokeAPI {
     static baseURL = "https://pokeapi.co/api/v2";
-    constructor() { }
+    #pokeCache;
+    constructor() {
+        this.#pokeCache = new Cache(10_000);
+    }
     /**
      * Gets an array of locations-area from the pokeAPI
      * @param pageURL Speficic page to fetch data from
@@ -8,8 +12,16 @@ export class PokeAPI {
      */
     async fetchLocations(pageURL) {
         const url = pageURL || `${PokeAPI.baseURL}/location-area`;
+        const cachedData = this.#pokeCache.get(url);
+        if (cachedData) {
+            console.log("Fetching from Cache:", url);
+            return cachedData;
+        }
+        console.log("Fetching from API:", url);
         const data = await fetch(url);
-        return (await data.json());
+        const locations = (await data.json());
+        this.#pokeCache.add(url, locations);
+        return locations;
     }
     /**
      * Gets a location from the pokeAPI

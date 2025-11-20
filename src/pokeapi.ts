@@ -1,7 +1,12 @@
+import { Cache } from "./pokecache.js";
+
 export class PokeAPI {
   private static readonly baseURL = "https://pokeapi.co/api/v2";
+  #pokeCache: Cache;
 
-  constructor() {}
+  constructor() {
+    this.#pokeCache = new Cache(10_000);
+  }
 
   /**
    * Gets an array of locations-area from the pokeAPI
@@ -10,8 +15,17 @@ export class PokeAPI {
    */
   async fetchLocations(pageURL?: string): Promise<ShallowLocations> {
     const url = pageURL || `${PokeAPI.baseURL}/location-area`;
+
+    //Check the cache
+    const cachedData = this.#pokeCache.get(url);
+    if (cachedData) {
+      return cachedData;
+    }
+
     const data = await fetch(url);
-    return (await data.json()) as ShallowLocations;
+    const locations = (await data.json()) as ShallowLocations;
+    this.#pokeCache.add(url, locations);
+    return locations;
   }
 
   /**
