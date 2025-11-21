@@ -1,6 +1,7 @@
 import { State } from "./state.js";
 /**
  * Exits the Pokedex application
+ * @param state Only here to fit with callback structure defined in state
  */
 export async function commandExit(state: State) {
   console.log("Closing the Pokedex... Goodbye!");

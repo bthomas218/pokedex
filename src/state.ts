@@ -1,10 +1,11 @@
 import { createInterface, type Interface } from "readline";
 import { commandExit } from "./command_exit.js";
 import { commandHelp } from "./command_help.js";
-import { PokeAPI } from "./pokeapi.js";
+import { PokeAPI, Pokemon } from "./pokeapi.js";
 import { commandMap } from "./command_map.js";
 import { commandMapb } from "./command_mapb.js";
 import { commandExplore } from "./command_explore.js";
+import { commandCatch } from "./command_catch.js";
 
 /**
  * Represents the state of the repl
@@ -15,6 +16,7 @@ export type State = {
   pokeAPI: PokeAPI;
   nextLocationURL: string | null;
   prevLocationURL: string | null;
+  pokedex: Record<string, Pokemon>;
 };
 
 /**
@@ -63,6 +65,11 @@ export function initState(): State {
       description: "Args: [area] | Displays pokemon in an area",
       callback: commandExplore,
     },
+    catch: {
+      name: "catch",
+      description: "Args: [pokemon name] | Try to catch the specified pokemon",
+      callback: commandCatch,
+    },
   };
 
   // Initialize PokeAPI
@@ -74,5 +81,6 @@ export function initState(): State {
     pokeAPI: pokeAPI,
     nextLocationURL: null,
     prevLocationURL: null,
+    pokedex: {},
   };
 }

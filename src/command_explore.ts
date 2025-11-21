@@ -1,6 +1,9 @@
 import { State } from "./state.js";
+
 /**
- * Exits the Pokedex application
+ * Lists pokemon names from a location area
+ * @param state The current state of the repl
+ * @param args Command arguments, only need the first which should be a location-area name
  */
 export async function commandExplore(state: State, ...args: string[]) {
   const LocationArea = await state.pokeAPI.fetchLocationArea(args[0]);

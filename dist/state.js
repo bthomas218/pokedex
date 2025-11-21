@@ -5,6 +5,7 @@ import { PokeAPI } from "./pokeapi.js";
 import { commandMap } from "./command_map.js";
 import { commandMapb } from "./command_mapb.js";
 import { commandExplore } from "./command_explore.js";
+import { commandCatch } from "./command_catch.js";
 export function initState() {
     // Initialize Readline
     const rl = createInterface({
@@ -39,6 +40,11 @@ export function initState() {
             description: "Args: [area] | Displays pokemon in an area",
             callback: commandExplore,
         },
+        catch: {
+            name: "catch",
+            description: "Args: [pokemon name] | Try to catch the specified pokemon",
+            callback: commandCatch,
+        },
     };
     // Initialize PokeAPI
     const pokeAPI = new PokeAPI();
@@ -48,5 +54,6 @@ export function initState() {
         pokeAPI: pokeAPI,
         nextLocationURL: null,
         prevLocationURL: null,
+        pokedex: {},
     };
 }

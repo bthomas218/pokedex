@@ -40,6 +40,23 @@ export class PokeAPI {
         return locationArea;
     }
     /**
+     * Gets information about a Pokemon from pokeAPI
+     * @param name Name of Pokemon to fetch data about
+     * @returns information about the Pokemon
+     */
+    async fetchPokemon(name) {
+        const url = `${PokeAPI.baseURL}/pokemon/${name}`;
+        //Check the cache
+        const cachedData = this.#pokeCache.get(url);
+        if (cachedData) {
+            return cachedData;
+        }
+        const data = await fetch(url);
+        const pokemon = (await data.json());
+        this.#pokeCache.add(url, pokemon);
+        return pokemon;
+    }
+    /**
      * Gets a location from the pokeAPI
      * @param locationName The location to fetch data from
      * @returns data about that location
