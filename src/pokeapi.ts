@@ -29,6 +29,26 @@ export class PokeAPI {
   }
 
   /**
+   * Gets information about a location area from pokeAPI
+   * @param name Name of location to fetch data from
+   * @returns information about the location
+   */
+  async fetchLocationArea(name: string): Promise<LocationArea> {
+    const url = `${PokeAPI.baseURL}/location-area/${name}`;
+
+    //Check the cache
+    const cachedData = this.#pokeCache.get(url);
+    if (cachedData) {
+      return cachedData;
+    }
+
+    const data = await fetch(url);
+    const locationArea = (await data.json()) as LocationArea;
+    this.#pokeCache.add(url, locationArea);
+    return locationArea;
+  }
+
+  /**
    * Gets a location from the pokeAPI
    * @param locationName The location to fetch data from
    * @returns data about that location
@@ -76,5 +96,61 @@ export type Location = {
   areas: Array<{
     name: string;
     url: string;
+  }>;
+};
+
+/**
+ * Type of location area from the
+ */
+export type LocationArea = {
+  id: number;
+  name: string;
+  game_index: number;
+  encounter_method_rates: Array<{
+    encounter_method: {
+      name: string;
+      url: string;
+    };
+    version_details: Array<{
+      rate: number;
+      version: {
+        name: string;
+        url: string;
+      };
+    }>;
+  }>;
+  location: {
+    name: string;
+    url: string;
+  };
+  names: Array<{
+    name: string;
+    language: {
+      name: string;
+      url: string;
+    };
+  }>;
+  pokemon_encounters: Array<{
+    pokemon: {
+      name: string;
+      url: string;
+    };
+    version_details: Array<{
+      version: {
+        name: string;
+        url: string;
+      };
+      max_chance: number;
+      encounter_details: Array<{
+        min_level: number;
+        max_level: number;
+        condition_values: Array<any>;
+        chance: number;
+        method: {
+          name: string;
+          url: string;
+        };
+      }>;
+    }>;
   }>;
 };

@@ -4,6 +4,7 @@ import { commandHelp } from "./command_help.js";
 import { PokeAPI } from "./pokeapi.js";
 import { commandMap } from "./command_map.js";
 import { commandMapb } from "./command_mapb.js";
+import { commandExplore } from "./command_explore.js";
 export function initState() {
     // Initialize Readline
     const rl = createInterface({
@@ -32,6 +33,11 @@ export function initState() {
             name: "mapb",
             description: "Displays the names of the previous 20 locations in the pokemon world",
             callback: commandMapb,
+        },
+        explore: {
+            name: "explore",
+            description: "Args: [area] | Displays pokemon in an area",
+            callback: commandExplore,
         },
     };
     // Initialize PokeAPI

@@ -27,7 +27,7 @@ test("reaps old entries but keeps new ones", async () => {
     const cache = new Cache(interval);
     cache.add("a", 1);
     // wait long enough for the reap loop to run and remove "a"
-    await sleep(interval + 50);
+    await sleep(2 * interval + 50);
     // add a new value after the first reap
     cache.add("b", 2);
     expect(cache.get("a")).toBe(undefined);

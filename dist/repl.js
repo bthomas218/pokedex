@@ -15,11 +15,11 @@ export function startREPL(state) {
     rl.prompt();
     rl.on("line", async (line) => {
         const input = cleanInput(line);
-        const commandName = input[0];
+        const [commandName, ...args] = input;
         const cmd = commandsRegistry[commandName];
         if (cmd) {
             try {
-                await cmd.callback(state);
+                await cmd.callback(state, ...args);
             }
             catch (error) {
                 console.log(`Error executing command: ${error}`);
