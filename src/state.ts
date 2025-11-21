@@ -7,6 +7,7 @@ import { commandMapb } from "./command_mapb.js";
 import { commandExplore } from "./command_explore.js";
 import { commandCatch } from "./command_catch.js";
 import { commandInspect } from "./command_inspect.js";
+import { commandPokedex } from "./command_pokedex.js";
 
 /**
  * Represents the state of the repl
@@ -76,6 +77,11 @@ export function initState(): State {
       description:
         "Args: [pokemon name] | View detailed information of pokemon you've caught",
       callback: commandInspect,
+    },
+    pokedex: {
+      name: "pokedex",
+      description: "View the names of the pokemon you've caught",
+      callback: commandPokedex,
     },
   };
 
